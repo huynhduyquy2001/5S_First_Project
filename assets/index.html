@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebView Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #4B63B6, #232934);
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        button {
+            background-color: #fff;
+            border: none;
+            border-radius: 25px;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #232934;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+            margin: 10px;
+        }
+
+        button:hover {
+            background-color: #ff7e5f;
+            color: #fff;
+        }
+
+        button:focus {
+            outline: none;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Flutter WebView</h1>
+
+        <input type="text" id="inputMessage" placeholder="Enter message">
+        <button onclick="sendMessageToFlutter()">Send Message to Flutter</button>
+        <br>
+        <input type="text" id="flutterMessage" placeholder="Message from Flutter">
+        <button onclick="sendMessageToJavaScript()">Send Message to JavaScript</button>
+        <p id="textFlutterMessage"></p>
+    </div>
+
+    <script type="text/javascript">
+        function sendMessageToFlutter() {
+            const message = document.getElementById('inputMessage').value;
+            document.getElementById('inputMessage').value = '';
+            if (window.FlutterChannel) {
+                FlutterChannel.postMessage(message);
+            }
+        }
+
+        function sendMessageToJavaScript() {
+            window.postMessage(document.getElementById('flutterMessage').value, '*');
+            document.getElementById('flutterMessage').value = '';
+        }
+
+        // Hàm để xử lý các thông báo nhận được từ Flutter
+        window.addEventListener('message', function (event) {
+            // Thêm kiểm tra nguồn gốc của thông điệp nếu cần
+            console.log('Received message from Flutter:', event.data);
+            document.getElementById('textFlutterMessage').textContent = event.data;
+        });
+    </script>
+</body>
+
+</html>

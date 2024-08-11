@@ -1,0 +1,228 @@
+<script>
+    const handleSaveApp = async () => {
+        flag = false;
+
+        //clear nội dung đính trên tìm kiếm
+        document.getElementById('FOCamera_ID_Input_Scan_Search').value = ''
+        arr_item_check = []
+        console.log("arr_question_required ", arr_question_required)
+
+        //kiểm tra nếu đang tìm kiếm thì load lại toàn bộ danh sách câu hỏi khi bấm xác nhận để kiểm tra các câu hỏi bắt buộc
+        const questionDetailsString = sessionStorage.getItem('arr_question_detail');
+        if (questionDetailsString) {
+            var foundElement = false;
+            const questionDetailsArray = JSON.parse(questionDetailsString);
+
+            for (const questionDetail of questionDetailsArray) {
+                const questionCode = questionDetail.question_cd;
+
+                let container = document.getElementById(questionCode)
+                if (container == null) {
+                    foundElement = true;
+                }
+
+            }
+        }
+        if (foundElement) {
+            await loadSurvey('');
+        }
+
+        // check integer cho type question Integer
+        for (let i = 0; i < arr_integer_type.length; i++) {
+            let input = document.querySelector(`input[name="answer_text_for_${arr_integer_type[i]}"]`)
+            if (input) {
+                //check nếu có nhập thì kiểm tra phải loại Integer kh
+                // đóng tạm thời thông báo sai định dạng số nguyên
+                //if (input.parentNode.parentNode.parentNode.getAttribute("sort") == 'Integer') {
+                //    if (input.value) {
+                //        if (isNaN(Number(input.value)) || input.value.includes(".")) {
+                //            input.focus();
+                //            alert("Sai định dạng số nguyên. Vui lòng nhập lại!")
+                //            return;
+                //        }
+                //    }
+                //}
+            }
+        }
+        // end check integer cho type question Integer
+
+
+        //check required answer
+        //arr_question_required.forEach((item) => {
+
+        //    let answer_required = document.getElementById(`answer_${item}`);
+        //    let childDivs = answer_required.querySelectorAll(".div-answer-child");
+
+        //    if (childDivs.length > 0) {
+        //        for (const childDiv of childDivs) {
+        //            const checkboxs = childDiv.querySelectorAll("input[type='checkbox']");
+        //            const radios = childDiv.querySelectorAll("input[type='radio']");
+
+        //            for (const radio of radios) {
+        //                if (radio.checked) {
+        //                    arr_item_check.push(item)
+        //                    //anyRadioboxChecked = true;
+        //                    console.log(`item Radiobox ${item} checked`)
+        //                    break;
+        //                }
+        //            }
+        //            for (const checkbox of checkboxs) {
+        //                if (checkbox.checked) {
+        //                    //anyCheckboxChecked = true;
+        //                    arr_item_check.push(item)
+        //                    console.log(`item Checkbox ${item} checked`)
+        //                    break;
+        //                }
+        //            }
+        //        }
+        //    }
+        //})
+        //console.log("arr_item_check ", arr_item_check)
+
+        // check answer required v2
+        console.log("arr_question_required ", arr_question_required)
+        arr_question_required.forEach((item) => {
+
+            let check = document.getElementById(`requireID_${item}`)
+            if (check.innerText != "") {
+
+                let divAV1 = document.getElementById(`answer_${item}`)
+                let divA = document.getElementById(`${item}`)
+
+                const checkboxs = Array.from(divA.querySelectorAll("input[type='checkbox']"));
+                const radios = Array.from(divA.querySelectorAll("input[type='radio']"));
+                const texts = Array.from(divA.querySelectorAll("input[type='text']"));
+                if (checkboxs.length > 0) {
+                    let isCheckBoxChecked = checkboxs.some(checkbox => checkbox.checked);
+                    if (!isCheckBoxChecked) {
+                        console.log("Vui lòng chọn câu hỏi checkbox ")
+                        flag = true
+                        return
+                    }
+                }
+                if (radios.length > 0) {
+                    let isRadioChecked = radios.some(radio => radio.checked);
+                    if (!isRadioChecked) {
+                        console.log("Vui lòng chọn câu hỏi radio ")
+                        flag = true
+                        return
+                    }
+
+                }
+                if (texts.length > 0) {
+
+                    let isTextValue = texts.some(text => text.value.trim() !== '');
+                    if (!isTextValue) {
+                        console.log("Vui lòng chọn câu hỏi input ")
+                        flag = true
+                        return
+                    }
+                }
+            }
+        })
+
+        //if (isCheckBoxChecked == false || isRadioChecked == false || isTextValue == false) {
+        if (flag) {
+            console.log("------flag-------", flag)
+            alert("Vui lòng điền đầy đủ các câu hỏi bắt buộc")
+            //await loadSurvey('');
+            return;
+        }
+
+        // Lưu câu hỏi
+        let Row_Number = '';
+        Row_Number = await Get_Times_Survey(ProgramCD, CustomerCode);
+
+        arr_question.forEach(async (item) => {
+            //lưu câu trả lời dạng check box
+            let div = document.getElementById(item)
+            if (div.getAttribute("sort") == "CheckBoxList") {
+                let res = await new Promise((resolve, reject) => {
+                    PageMethods.saveAnswersCustomer(item, sessionStorage.getItem(item) ? sessionStorage.getItem(item) : " ", CustomerCode, Row_Number, (data) => {
+                        resolve(data);
+                    });
+                });
+                console.log(` ----------- CheckBoxList `, res)
+            }
+
+            //lưu câu hỏi dạng checkbox và radiobox
+            let answerV1 = document.getElementById(`answer_${item}`)
+            let answer = document.getElementById(`div-answer_${item}`)
+            if (answer && answer.children.length > 0) {
+                let selected = document.querySelectorAll(`input[name="answer_for_${item}"]:checked`);
+                if (selected.length > 0) {
+                    console.log(`Bắt đầu lưu câu trả lời của câu hỏi ${item}`)
+                    selected.forEach(async checkbox => {
+                        // kiểm tra nếu là check box bỏ qua lưu ở bước sau
+                        if (checkbox.type == 'checkbox') {
+                            return
+                        }
+                        processing = true;
+                        let res = await processSave(item, checkbox.value, CustomerCode, Row_Number)
+                        const check = JSON.parse(res)[0]["Status_Code"];
+                        const status = JSON.parse(check);
+                        console.log("status ", status)
+                        if (status != 1) {
+                            flag = false
+                        }
+                    });
+
+                } else {
+
+                    let divC = document.getElementById(item)
+                    if (divC.getAttribute("sort") != "Float" && divC.getAttribute("sort") != "Integer" && divC.getAttribute("sort") != "Text" && divC.getAttribute("sort") != "CheckBoxList") {
+                        let res = await new Promise((resolve, reject) => {
+                            PageMethods.saveAnswersCustomer(item, '', CustomerCode, Row_Number, (data) => {
+                                resolve(data);
+                            });
+                        });
+                        console.log(`res ------${item}-----`, res)
+                    }
+                }
+            }
+
+            ////lưu câu hỏi dạng text
+            let input = document.querySelector(`input[name="answer_text_for_${item}"]`)
+            if (input) {
+                //không nhập text vẫn lưu
+
+                //check nếu có nhập thì kiểm tra phải loại Integer kh
+                //if (input.parentNode.parentNode.parentNode.getAttribute("sort") == 'Integer') {
+                //    console.log(" Dô ---------1----")
+                //    if (input.value) {
+                //        console.log(" Dô ---------2----")
+                //        if (isNaN(Number(input.value)) || input.value.includes(".")) {
+                //            console.log(" Dô ------3-------")
+                //            input.focus();
+                //            alert("Sai định dạng số nguyên. Vui lòng nhập lại!")
+                //            break;
+                //        }
+                //    }
+                //}
+                let res = await processSaveText(item, input.value, CustomerCode, Row_Number)
+                const check = JSON.parse(res)[0]["Status_Code"];
+                const status = JSON.parse(check);
+                console.log("status lưu text", status)
+                if (status != 1) {
+                    flag = false
+                }
+            }
+        })
+
+        //clear anwser
+
+        //let all = document.querySelectorAll('[name^="answer_for_"]');
+        //let allText = document.querySelectorAll('[name^="answer_text_for_"]');
+        //for (const e of all) {
+        //    e.checked = false;
+        //}
+        //for (const e of allText) {
+        //    e.value = "";
+        //}
+        setTimeout(() => {
+            //window.location.href = '/fsmdls/Testing/TestAppSignature.aspx?ProgramCD=' + ProgramCD + '&Customercode=' + CustomerCode
+        }, 500)
+
+
+    }
+</script>

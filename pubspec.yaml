@@ -1,0 +1,82 @@
+name: demo_2
+description: "A new Flutter project."
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.17.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_native_splash: ^2.4.1
+  flutterflow_ui: ^0.2.0
+  flutter_rating_bar: ^4.0.1
+  webview_flutter: ^4.8.0
+  font_awesome_flutter: ^10.1.0
+  flutter_inappwebview: ^5.8.0
+  flutter_local_notifications: ^17.2.1+2
+  flutter_background: ^1.2.0
+
+
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.6
+  http: ^0.13.6
+  flutter_svg: ^1.0.0
+  awesome_notifications: ^0.8.2
+  awesome_notifications_core: ^0.9.0
+  flutter_html: ^3.0.0-beta.2
+  path_provider: ^2.1.4
+  permission_handler: ^11.3.1
+  device_info_plus: ^10.1.1
+  mssql_connection: ^1.1.3
+  sqflite: ^2.2.6
+  geolocator: ^12.0.0
+  timeago: ^3.2.2
+  flutter_animate: ^4.1.1+1
+  barcode_scan2: ^4.3.3
+  flutter_barcode_scanner: ^2.0.0
+  flutter_launcher_icons: "^0.13.1"
+  flutter_downloader: ^1.11.8
+  dio: ^5.5.0+1
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/10-app-icon-designs.jpg"
+
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # The "flutter_lints" package below contains a set of recommended lints to
+  # encourage good coding practices. The lint set provided by the package is
+  # activated in the `analysis_options.yaml` file located at the root of your
+  # package. See that file for information about deactivating specific lint
+  # rules and activating additional ones.
+  flutter_lints: ^3.0.0
+
+flutter:
+
+  uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/index.html
+module:
+    androidX: true # Add this line.
+
+flutter_native_splash:
+  background_image: "assets/images/RHzvO.png"
+
+  android_12:
+    image: assets/images/RHzvO.png
+
+  android: true
+  ios: true
+  web: true

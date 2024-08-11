@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Flutter InAppWebView Example</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(45deg, #232934, #4B63B6);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        .container {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 40px;
+            /* Increased padding */
+            border-radius: 20px;
+            /* Larger border radius */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            /* Larger shadow */
+            width: 95%;
+            /* Container width relative to the screen size */
+            max-width: 800px;
+            /* Maximum width for larger devices */
+        }
+
+        h1 {
+            font-size: 3em;
+            /* Larger font size */
+            margin-bottom: 40px;
+            /* Increased spacing */
+        }
+
+        input[type="text"] {
+            padding: 15px;
+            /* Increased padding */
+            border: none;
+            border-radius: 10px;
+            /* Larger border radius */
+            width: 100%;
+            /* Full width of the container */
+            /* Larger font size */
+            margin-bottom: 30px;
+            font-size: 2.2em;
+            /* Increased spacing */
+        }
+
+        button {
+            padding: 15px 30px;
+            /* Increased padding */
+            border: none;
+            border-radius: 10px;
+            /* Larger border radius */
+            background-color: #4B63B6;
+            color: white;
+            font-size: 2.2em;
+            padding: 15px 30px;
+            /* Larger font size */
+            cursor: pointer;
+            transition: background-color 0.3s;
+            /* Smooth transition for hover effect */
+        }
+
+        button:hover {
+            background-color: #3a4c8c;
+        }
+
+        h2 {
+            font-size: 2.2em;
+            /* Larger font size */
+            margin-top: 30px;
+            /* Increased spacing */
+        }
+
+        p {
+            font-size: 2.2em;
+
+            /* Larger font size */
+        }
+    </style>
+    <script type="text/javascript">
+        function sendToFlutter() {
+            var data = document.getElementById("inputData").value;
+            window.flutter_inappwebview.callHandler('sendData', data);
+        }
+
+        function receiveFromFlutter(data) {
+            document.getElementById("receivedData").innerText = data;
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Flutter InAppWebView Example</h1>
+        <input type="text" id="inputData" placeholder="Enter some data">
+        <button onclick="sendToFlutter()">Send to Flutter</button>
+        <h2>Data received from Flutter:</h2>
+        <p id="receivedData"></p>
+    </div>
+</body>
+
+</html>
