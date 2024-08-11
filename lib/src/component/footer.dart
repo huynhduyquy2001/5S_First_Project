@@ -1,4 +1,4 @@
-import 'package:flutterflow_ui/flutterflow_ui.dart';
+import 'package:demo_2/src/flutter_flow/flutter_flow.dart';
 import 'package:flutter/material.dart';
 
 class FooterWidget extends StatefulWidget {

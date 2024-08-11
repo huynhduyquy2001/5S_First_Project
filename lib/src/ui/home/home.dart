@@ -14,7 +14,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:flutterflow_ui/flutterflow_ui.dart';
+import 'package:demo_2/src/flutter_flow/flutter_flow.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:mssql_connection/mssql_connection.dart';

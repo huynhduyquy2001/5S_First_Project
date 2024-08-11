@@ -2,7 +2,7 @@
 
 import 'package:demo_2/src/component/banner.dart';
 import 'package:demo_2/src/component/custom_drawer.dart';
-import 'package:flutterflow_ui/flutterflow_ui.dart';
+import 'package:demo_2/src/flutter_flow/flutter_flow.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
