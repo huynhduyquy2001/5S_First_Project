@@ -1,37 +1,16 @@
 workflows:
   ios-workflow:
-    name: Build iOS App
-    max_build_duration: 60
+    name: iOS Workflow
     environment:
-      vars:
-        XCODE_WORKSPACE: "YourProject.xcworkspace"
-        XCODE_SCHEME: "YourProject"
-        XCODE_PROJECT: "YourProject.xcodeproj"
+      flutter: stable
+      xcode: latest
     scripts:
-      - name: Set up the environment
+      - name: Install CocoaPods dependencies
         script: |
-          echo "Setting up environment"
-      - name: Check Xcode version
-        script: |
-          xcodebuild -version
-      - name: Clean and reset derived data
-        script: |
-          rm -rf ~/Library/Developer/Xcode/DerivedData
-      - name: Install dependencies
-        script: |
-          brew update
-          brew install cocoapods
-          pod install
-      - name: Disable module interface generation
-        script: |
-          defaults write com.apple.dt.Xcode IDEIndexDisable 1
-          defaults write com.apple.dt.Xcode IDEBuildOperationMaxNumberOfConcurrentCompileTasks 1
-      - name: Clean the build folder
-        script: |
-          xcodebuild clean -workspace "$XCODE_WORKSPACE" -scheme "$XCODE_SCHEME" -sdk iphoneos -configuration Release
-      - name: Build the project
-        script: |
-          xcodebuild -workspace "$XCODE_WORKSPACE" -scheme "$XCODE_SCHEME" -sdk iphoneos -configuration Release build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
+          cd ios
+          pod install --repo-update
+          cd ..
+      - name: Build iOS
+        script: flutter build ios --release --no-codesign
     artifacts:
-      - build/ios/ipa/*.ipa
-      - build/ios/ipa/*.dSYM.zip
+      - build/ios/iphoneos/*.ipa
