@@ -20,9 +20,6 @@ import 'package:demo_2/src/ui/webview/test2.dart';
 import 'src/ui/home/home.dart';
 
 void main() {
-  // Initialize Awesome Notifications
-  NotificationController.initializeNotification();
-
   runApp(const MyApp());
 }
 

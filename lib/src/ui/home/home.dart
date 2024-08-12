@@ -6,7 +6,6 @@ import 'dart:io';
 import 'package:demo_2/database_helper.dart';
 import 'package:demo_2/src/collections/Booking.dart';
 import 'package:demo_2/src/collections/Coordinate.dart';
-import 'package:demo_2/src/collections/notification_controller.dart';
 import 'package:demo_2/src/component/custom_drawer.dart';
 import 'package:demo_2/src/component/footer.dart';
 import 'package:demo_2/src/services/BookingService.dart';
@@ -81,11 +80,11 @@ class _HomePageState extends State<HomePage> {
       String allBookingInfo = data.map((json) => json['RESULT']).join('\n');
 
       // Show notification with booking info
-      await NotificationController.showNotification(
-        title: 'Booking Information',
-        body: allBookingInfo,
-        payload: {'navigate': 'booking'}, // Ensure payload is set
-      );
+      // await NotificationController.showNotification(
+      //   title: 'Booking Information',
+      //   body: allBookingInfo,
+      //   payload: {'navigate': 'booking'}, // Ensure payload is set
+      // );
     } catch (e) {
       // Print detailed error message
       print('Error fetching booking info: $e');
