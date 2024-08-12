@@ -6,9 +6,6 @@ workflows:
       flutter: stable
       xcode: latest
       cocoapods: default
-      env:
-        CI: true
-        FLUTTER_BUILD_MODE: release
     triggering:
       events:
         - push
@@ -32,6 +29,3 @@ workflows:
       email:
         recipients:
           - your_email@example.com
-        notify:
-          on_success: true
-          on_failure: true
