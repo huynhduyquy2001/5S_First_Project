@@ -1,17 +1,11 @@
 workflows:
   ios-workflow:
-    name: iOS Build and TestFlight Distribution
+    name: iOS Build
     max_build_duration: 60
     environment:
       flutter: stable
       xcode: latest
       cocoapods: default
-      vars:
-        APPLE_ID: ${{ secrets.APPLE_ID }}
-        APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
-        APP_STORE_CONNECT_KEY_IDENTIFIER: ${{ secrets.APP_STORE_CONNECT_KEY_IDENTIFIER }}
-        APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
-        APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APP_STORE_CONNECT_PRIVATE_KEY }}
     scripts:
       - name: Install dependencies
         script: |
@@ -22,6 +16,15 @@ workflows:
       - name: Build iOS
         script: |
           flutter build ios --release --no-codesign
+      - name: Archive iOS
+        script: |
+          xcodebuild archive \
+            -workspace ios/Runner.xcworkspace \
+            -scheme Runner \
+            -configuration Release \
+            -archivePath build/ios/Runner.xcarchive \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO
       - name: Create IPA
         script: |
           mkdir -p build/ios/ipa
@@ -29,12 +32,5 @@ workflows:
             -archivePath build/ios/Runner.xcarchive \
             -exportOptionsPlist ios/Runner/ExportOptions.plist \
             -exportPath build/ios/ipa
-      - name: Upload to TestFlight
-        script: |
-          xcrun altool --upload-app \
-            --type ios \
-            --file build/ios/ipa/Runner.ipa \
-            --username $APPLE_ID \
-            --password $APPLE_APP_SPECIFIC_PASSWORD
 artifacts:
   - build/ios/ipa/Runner.ipa
