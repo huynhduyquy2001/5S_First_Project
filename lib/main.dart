@@ -1,7 +1,7 @@
-import 'package:barcode_scan2/platform_wrapper.dart';
 import 'package:demo_2/src/ui/about_screen.dart';
 import 'package:demo_2/src/ui/barcode_screen.dart';
 import 'package:demo_2/src/ui/booking_sqlite/BookingsSqlPage.dart';
+import 'package:demo_2/src/ui/contact_screen.dart';
 import 'package:demo_2/src/ui/coordinate_screen.dart';
 import 'package:demo_2/src/ui/input_coordinate.dart';
 import 'package:demo_2/src/ui/permission/permission_screen.dart';
@@ -10,7 +10,6 @@ import 'package:demo_2/src/ui/webview/webview_khai.dart';
 import 'package:demo_2/src/ui/webview/webview_kiet.dart';
 import 'package:demo_2/src/ui/webview/webview_thao.dart';
 import 'package:flutter/material.dart';
-import 'package:demo_2/src/collections/notification_controller.dart';
 import 'package:demo_2/src/ui/booking/booking_screen.dart';
 import 'package:demo_2/src/ui/message/message.dart';
 import 'package:demo_2/src/ui/product/product.dart';
@@ -57,6 +56,7 @@ class MyApp extends StatelessWidget {
         '/test-webview-khai': (context) => const WebviewKhai(),
         '/test-webview-kiet': (context) => const WebviewKiet(),
         '/test-webview-thao': (context) => const WebviewThao(),
+        '/contact': (context) => const ContactWidget(),
       },
     );
   }

@@ -115,13 +115,14 @@ class CustomDrawer extends StatelessWidget {
               Navigator.pushNamed(context, '/barcode-scanner');
             },
           ),
-          // ListTile(
-          //   leading: const Icon(Icons.logout),
-          //   title: const Text('Sign Out'),
-          //   onTap: () {
-          //     // Handle the action
-          //   },
-          // ),
+          ListTile(
+            leading: const Icon(Icons.logout),
+            title: const Text('Contact'),
+            onTap: () {
+              // Handle the action
+              Navigator.pushNamed(context, '/contact');
+            },
+          ),
         ],
       ),
     );
